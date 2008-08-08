@@ -97,6 +97,7 @@ class SiteMap extends ContentPlugin {
 
 		if (count($items)) {
 			foreach($items as $item) {
+				$item = $Eresus->sections->get($item['id']);
 				if ($item['type'] == 'url') $item['url'] = $item['content'];
 				else $item['url'] = $page->clientURL($item['id']);
 				$item['level'] = $level+1;
