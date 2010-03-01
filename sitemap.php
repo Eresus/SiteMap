@@ -1,12 +1,12 @@
 <?php
 /**
- * SiteMap
- *
- * Eresus 2
- *
  * Карта сайта
  *
- * @version 3.00
+ * Eresus 2.10
+ *
+ * Карта разделов сайта
+ *
+ * @version 3.01
  *
  * @copyright   2006, ProCreat Systems, http://procreat.ru/
  * @copyright   2007, Eresus Group, http://eresus.ru/
@@ -29,10 +29,12 @@
  * Вы должны были получить копию Стандартной Общественной Лицензии
  * GNU с этой программой. Если Вы ее не получили, смотрите документ на
  * <http://www.gnu.org/licenses/>
+ *
+ * $Id: sitemap.php 60 2010-03-01 03:41:02Z ghost $
  */
 
 class SiteMap extends ContentPlugin {
-	var $version = '3.00';
+	var $version = '3.01';
 	var $kernel = '2.10';
 	var $title = 'Карта сайта';
 	var $description = 'Карта разделов сайта';
@@ -112,6 +114,14 @@ class SiteMap extends ContentPlugin {
 	//-----------------------------------------------------------------------------
 	function clientRenderContent()
 	{
+		global $Eresus, $page;
+
+		$extra_GET_arguments = $Eresus->request['url'] != $Eresus->request['path'];
+		$is_ARG_request = count($Eresus->request['arg']);
+
+		if ($extra_GET_arguments) $page->httpError(404);
+		if ($is_ARG_request) $page->httpError(404);
+
 		$result = $this->branch();
 		return $result;
 	}
