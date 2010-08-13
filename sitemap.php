@@ -43,7 +43,7 @@
  */
 class SiteMap extends ContentPlugin
 {
-	var $version = '3.01b';
+	var $version = '3.01';
 	var $kernel = '2.10';
 	var $title = 'Карта сайта';
 	var $description = 'Карта разделов сайта';
