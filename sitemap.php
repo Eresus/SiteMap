@@ -69,16 +69,22 @@ class SiteMap extends ContentPlugin
 			'name'=>'SettingsForm',
 			'caption' => $this->title.' '.$this->version,
 			'width' => '500px',
-			'fields' => array (
+			'fields' => array(
 				array('type'=>'hidden','name'=>'update', 'value'=>$this->name),
 				array('type'=>'header', 'value'=>'Шаблоны'),
-				array('type'=>'memo','name'=>'tmplList','label'=>'Шаблон блока одного уровня меню', 'height' => '3'),
-				array('type'=>'text', 'value' => 'Макросы:<ul><li><b>$(level)</b> - номер текущего уровня</li><li><b>$(items)</b> - подразделы</li></ul>'),
+				array('type'=>'memo','name'=>'tmplList','label'=>'Шаблон блока одного уровня меню',
+					'height' => '3'),
+				array('type'=>'text',
+					'value' => 'Макросы:<ul><li><b>$(level)</b> - номер текущего уровня</li><li><b>$(items)' .
+					'</b> - подразделы</li></ul>'),
 				array('type'=>'memo','name'=>'tmplItem','label'=>'Шаблон пункта меню', 'height' => '3'),
-				array('type'=>'text', 'value' => 'Макросы:<ul><li><b>Все элементы страницы</b></li><li><b>$(level)</b> - номер текущего уровня</li><li><b>$(url)</b> - ссылка</li><li><b>$(subitems)</b> - место для вставки подразделов</li></ul>'),
+				array('type'=>'text', 'value' => 'Макросы:<ul><li><b>Все элементы страницы</b></li><li>' .
+					'<b>$(level)</b> - номер текущего уровня</li><li><b>$(url)</b> - ссылка</li><li><b>' .
+					'$(subitems)</b> - место для вставки подразделов</li></ul>'),
 				array('type'=>'header', 'value'=>'Опции'),
 				array('type'=>'checkbox','name'=>'showHidden','label'=>'Показывать невидимые'),
-				array('type'=>'checkbox','name'=>'showPriveleged','label'=>'Показывать независимо от уровня доступа'),
+				array('type'=>'checkbox','name'=>'showPriveleged',
+					'label'=>'Показывать независимо от уровня доступа'),
 			),
 			'buttons' => array('ok', 'apply', 'cancel'),
 		);
@@ -101,17 +107,28 @@ class SiteMap extends ContentPlugin
 		$result = '';
 
 		$flags = SECTIONS_ACTIVE;
-		if (!$this->settings['showHidden']) $flags += SECTIONS_VISIBLE;
+		if (!$this->settings['showHidden'])
+		{
+			$flags += SECTIONS_VISIBLE;
+		}
 
 		$access = $this->settings['showPriveleged'] ? ROOT : $Eresus->user['access'];
 
 		$items = $Eresus->sections->children($owner, $access, $flags);
 
-		if (count($items)) {
-			foreach($items as $item) {
+		if (count($items))
+		{
+			foreach ($items as $item)
+			{
 				$item = $Eresus->sections->get($item['id']);
-				if ($item['type'] == 'url') $item['url'] = $item['content'];
-				else $item['url'] = $page->clientURL($item['id']);
+				if ($item['type'] == 'url')
+				{
+					$item['url'] = $item['content'];
+				}
+				else
+				{
+					$item['url'] = $page->clientURL($item['id']);
+				}
 				$item['level'] = $level+1;
 				$item['subitems'] = $this->branch($item['id'], $level+1);
 				$result .= $this->replaceMacros($this->settings['tmplItem'], $item);
@@ -134,8 +151,14 @@ class SiteMap extends ContentPlugin
 		$extra_GET_arguments = $Eresus->request['url'] != $Eresus->request['path'];
 		$is_ARG_request = count($Eresus->request['arg']);
 
-		if ($extra_GET_arguments) $page->httpError(404);
-		if ($is_ARG_request) $page->httpError(404);
+		if ($extra_GET_arguments)
+		{
+			$page->httpError(404);
+		}
+		if ($is_ARG_request)
+		{
+			$page->httpError(404);
+		}
 
 		$result = $this->branch();
 		return $result;
@@ -153,8 +176,10 @@ class SiteMap extends ContentPlugin
 		$wnd = array(
 			'caption' => $this->title,
 			'body' =>
-				'<p>Содержимое этого раздела создаётся автоматически на основе <a href="'.$Eresus->root.'admin.php?mod=pages">структуры разделов</a> сайта.</p>'.
-				'<p>Настроить внешний вид можно в <a href="'.$Eresus->root.'admin.php?mod=plgmgr&id='.$this->name.'">настройках модуля</a>.</p>',
+				'<p>Содержимое этого раздела создаётся автоматически на основе <a href="'.$Eresus->root.
+				'admin.php?mod=pages">структуры разделов</a> сайта.</p>'.
+				'<p>Настроить внешний вид можно в <a href="'.$Eresus->root.'admin.php?mod=plgmgr&id='.
+				$this->name.'">настройках модуля</a>.</p>',
 		);
 
 		$result = $page->window($wnd);
