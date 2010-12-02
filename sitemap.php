@@ -6,7 +6,7 @@
  *
  * Карта разделов сайта
  *
- * @version 3.01
+ * @version 3.02
  *
  * @copyright 2006, ProCreat Systems, http://procreat.ru/
  * @copyright 2007, Eresus Group, http://eresus.ru/
@@ -43,7 +43,7 @@
  */
 class SiteMap extends ContentPlugin
 {
-	var $version = '3.01a';
+	var $version = '3.02a';
 	var $kernel = '2.10';
 	var $title = 'Карта сайта';
 	var $description = 'Карта разделов сайта';
