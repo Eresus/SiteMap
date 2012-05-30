@@ -84,8 +84,6 @@ class SiteMap extends ContentPlugin
 	 */
 	public function settings()
 	{
-		global $page;
-
 		$form = array(
 			'name'=>'SettingsForm',
 			'caption' => $this->title.' '.$this->version,
@@ -109,7 +107,7 @@ class SiteMap extends ContentPlugin
 			),
 			'buttons' => array('ok', 'apply', 'cancel'),
 		);
-		$result = $page->renderForm($form, $this->settings);
+		$result = Eresus_Kernel::app()->getPage()->renderForm($form, $this->settings);
 		return $result;
 	}
 	//-----------------------------------------------------------------------------
@@ -123,8 +121,6 @@ class SiteMap extends ContentPlugin
 	 */
 	private function branch($owner = 0, $level = 0)
 	{
-		global $Eresus, $page;
-
 		$result = '';
 
 		$flags = SECTIONS_ACTIVE;
@@ -133,22 +129,23 @@ class SiteMap extends ContentPlugin
 			$flags += SECTIONS_VISIBLE;
 		}
 
-		$access = $this->settings['showPriveleged'] ? ROOT : $Eresus->user['access'];
+		$access = $this->settings['showPriveleged'] ? ROOT :
+			Eresus_CMS::getLegacyKernel()->user['access'];
 
-		$items = $Eresus->sections->children($owner, $access, $flags);
+		$items = Eresus_CMS::getLegacyKernel()->sections->children($owner, $access, $flags);
 
 		if (count($items))
 		{
 			foreach ($items as $item)
 			{
-				$item = $Eresus->sections->get($item['id']);
+				$item = Eresus_CMS::getLegacyKernel()->sections->get($item['id']);
 				if ($item['type'] == 'url')
 				{
 					$item['url'] = $item['content'];
 				}
 				else
 				{
-					$item['url'] = $page->clientURL($item['id']);
+					$item['url'] = Eresus_Kernel::app()->getPage()->clientURL($item['id']);
 				}
 				$item['level'] = $level+1;
 				$item['subitems'] = $this->branch($item['id'], $level+1);
@@ -167,18 +164,17 @@ class SiteMap extends ContentPlugin
 	 */
 	public function clientRenderContent()
 	{
-		global $Eresus, $page;
-
-		$extra_GET_arguments = $Eresus->request['url'] != $Eresus->request['path'];
-		$is_ARG_request = count($Eresus->request['arg']);
+		$extra_GET_arguments = Eresus_CMS::getLegacyKernel()->request['url'] !=
+			Eresus_CMS::getLegacyKernel()->request['path'];
+		$is_ARG_request = count(Eresus_CMS::getLegacyKernel()->request['arg']);
 
 		if ($extra_GET_arguments)
 		{
-			$page->httpError(404);
+			Eresus_Kernel::app()->getPage()->httpError(404);
 		}
 		if ($is_ARG_request)
 		{
-			$page->httpError(404);
+			Eresus_Kernel::app()->getPage()->httpError(404);
 		}
 
 		$result = $this->branch();
@@ -192,18 +188,18 @@ class SiteMap extends ContentPlugin
 	 */
 	public function adminRenderContent()
 	{
-		global $Eresus, $page;
-
 		$wnd = array(
 			'caption' => $this->title,
 			'body' =>
-			'<p>Содержимое этого раздела создаётся автоматически на основе <a href="'.$Eresus->root.
+			'<p>Содержимое этого раздела создаётся автоматически на основе <a href="'.
+				Eresus_CMS::getLegacyKernel()->root .
 				'admin.php?mod=pages">структуры разделов</a> сайта.</p>'.
-				'<p>Настроить внешний вид можно в <a href="'.$Eresus->root.'admin.php?mod=plgmgr&id='.
+				'<p>Настроить внешний вид можно в <a href="' .
+				Eresus_CMS::getLegacyKernel()->root . 'admin.php?mod=plgmgr&id='.
 				$this->name.'">настройках модуля</a>.</p>',
 		);
 
-		$result = $page->window($wnd);
+		$result = Eresus_Kernel::app()->getPage()->window($wnd);
 
 		return $result;
 	}
