@@ -2,17 +2,15 @@
 /**
  * Карта сайта
  *
- * Eresus 2.10
- *
  * Карта разделов сайта
  *
- * @version 3.02
+ * @version 4.00
  *
- * @copyright 2006, ProCreat Systems, http://procreat.ru/
+ * @copyright 2006, Михаил Красильников <mihalych@vsepofigu.ru>
  * @copyright 2007, Eresus Group, http://eresus.ru/
  * @copyright 2010, ООО "Два слона", http://dvaslona.ru/
  * @license http://www.gnu.org/licenses/gpl.txt  GPL License 3
- * @author Mikhail Krasilnikov <mk@procreat.ru>
+ * @author Михаил Красильников <mihalych@vsepofigu.ru>
  * @author Ghost <ghost@dvaslona.ru>
  *
  * Данная программа является свободным программным обеспечением. Вы
@@ -43,12 +41,35 @@
  */
 class SiteMap extends ContentPlugin
 {
-	var $version = '3.02a';
-	var $kernel = '2.10';
-	var $title = 'Карта сайта';
-	var $description = 'Карта разделов сайта';
-	var $type = 'client,content,ondemand';
-	var $settings = array (
+	/**
+	 * Версия
+	 * @var string
+	 */
+	public $version = '4.00a';
+
+	/**
+	 * Требуемая версия CMS
+	 * @var string
+	 */
+	public $kernel = '3.00b';
+
+	/**
+	 * Название
+	 * @var string
+	 */
+	public $title = 'Карта сайта';
+
+	/**
+	 * Описание
+	 * @var string
+	 */
+	public $description = 'Карта разделов сайта';
+
+	/**
+	 * Версия
+	 * @var string
+	 */
+	public $settings = array (
 		'tmplList' => '<ul class="level$(level)">$(items)</ul>',
 		'tmplItem' => '<li><a href="$(url)" title="$(hint)">$(caption)</a>$(subitems)</li>',
 		'showHidden' => false,
@@ -61,7 +82,7 @@ class SiteMap extends ContentPlugin
 	 *
 	 * @return string  Диалог настроек
 	 */
-	function settings()
+	public function settings()
 	{
 		global $page;
 
@@ -100,7 +121,7 @@ class SiteMap extends ContentPlugin
 	 * @param int    $level  уровень вложенности
 	 * @return string
 	 */
-	function branch($owner = 0, $level = 0)
+	private function branch($owner = 0, $level = 0)
 	{
 		global $Eresus, $page;
 
@@ -144,7 +165,7 @@ class SiteMap extends ContentPlugin
 	 * ???
 	 * @return string
 	 */
-	function clientRenderContent()
+	public function clientRenderContent()
 	{
 		global $Eresus, $page;
 
@@ -169,7 +190,7 @@ class SiteMap extends ContentPlugin
 	 * ???
 	 * @return string
 	 */
-	function adminRenderContent()
+	public function adminRenderContent()
 	{
 		global $Eresus, $page;
 
