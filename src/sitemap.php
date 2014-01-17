@@ -73,7 +73,6 @@ class SiteMap extends ContentPlugin
         'showHidden' => false,
         'showPriveleged' => false,
     );
-    //-----------------------------------------------------------------------------
 
     /**
      * Настройки плагина
@@ -108,7 +107,6 @@ class SiteMap extends ContentPlugin
         $result = Eresus_Kernel::app()->getPage()->renderForm($form, $this->settings);
         return $result;
     }
-    //-----------------------------------------------------------------------------
 
     /**
      * Построение ветки
@@ -154,7 +152,6 @@ class SiteMap extends ContentPlugin
         }
         return $result;
     }
-    //-----------------------------------------------------------------------------
 
     /**
      * ???
@@ -178,7 +175,6 @@ class SiteMap extends ContentPlugin
         $result = $this->branch();
         return $result;
     }
-    //-----------------------------------------------------------------------------
 
     /**
      * ???
@@ -201,5 +197,5 @@ class SiteMap extends ContentPlugin
 
         return $result;
     }
-    //-----------------------------------------------------------------------------
 }
+
