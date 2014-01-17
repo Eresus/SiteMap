@@ -41,167 +41,167 @@
  */
 class SiteMap extends ContentPlugin
 {
-	/**
-	 * Версия
-	 * @var string
-	 */
-	public $version = '4.00a';
+    /**
+     * Версия
+     * @var string
+     */
+    public $version = '4.00a';
 
-	/**
-	 * Требуемая версия CMS
-	 * @var string
-	 */
-	public $kernel = '3.00b';
+    /**
+     * Требуемая версия CMS
+     * @var string
+     */
+    public $kernel = '3.00b';
 
-	/**
-	 * Название
-	 * @var string
-	 */
-	public $title = 'Карта сайта';
+    /**
+     * Название
+     * @var string
+     */
+    public $title = 'Карта сайта';
 
-	/**
-	 * Описание
-	 * @var string
-	 */
-	public $description = 'Карта разделов сайта';
+    /**
+     * Описание
+     * @var string
+     */
+    public $description = 'Карта разделов сайта';
 
-	/**
-	 * Версия
-	 * @var string
-	 */
-	public $settings = array (
-		'tmplList' => '<ul class="level$(level)">$(items)</ul>',
-		'tmplItem' => '<li><a href="$(url)" title="$(hint)">$(caption)</a>$(subitems)</li>',
-		'showHidden' => false,
-		'showPriveleged' => false,
-	);
-	//-----------------------------------------------------------------------------
+    /**
+     * Версия
+     * @var string
+     */
+    public $settings = array(
+        'tmplList' => '<ul class="level$(level)">$(items)</ul>',
+        'tmplItem' => '<li><a href="$(url)" title="$(hint)">$(caption)</a>$(subitems)</li>',
+        'showHidden' => false,
+        'showPriveleged' => false,
+    );
+    //-----------------------------------------------------------------------------
 
-	/**
-	 * Настройки плагина
-	 *
-	 * @return string  Диалог настроек
-	 */
-	public function settings()
-	{
-		$form = array(
-			'name'=>'SettingsForm',
-			'caption' => $this->title.' '.$this->version,
-			'width' => '500px',
-			'fields' => array(
-				array('type'=>'hidden','name'=>'update', 'value'=>$this->name),
-				array('type'=>'header', 'value'=>'Шаблоны'),
-				array('type'=>'memo','name'=>'tmplList','label'=>'Шаблон блока одного уровня меню',
-					'height' => '3'),
-				array('type'=>'text',
-					'value' => 'Макросы:<ul><li><b>$(level)</b> - номер текущего уровня</li><li><b>$(items)' .
-						'</b> - подразделы</li></ul>'),
-				array('type'=>'memo','name'=>'tmplItem','label'=>'Шаблон пункта меню', 'height' => '3'),
-				array('type'=>'text', 'value' => 'Макросы:<ul><li><b>Все элементы страницы</b></li><li>' .
-					'<b>$(level)</b> - номер текущего уровня</li><li><b>$(url)</b> - ссылка</li><li><b>' .
-					'$(subitems)</b> - место для вставки подразделов</li></ul>'),
-				array('type'=>'header', 'value'=>'Опции'),
-				array('type'=>'checkbox','name'=>'showHidden','label'=>'Показывать невидимые'),
-				array('type'=>'checkbox','name'=>'showPriveleged',
-					'label'=>'Показывать независимо от уровня доступа'),
-			),
-			'buttons' => array('ok', 'apply', 'cancel'),
-		);
-		$result = Eresus_Kernel::app()->getPage()->renderForm($form, $this->settings);
-		return $result;
-	}
-	//-----------------------------------------------------------------------------
+    /**
+     * Настройки плагина
+     *
+     * @return string  Диалог настроек
+     */
+    public function settings()
+    {
+        $form = array(
+            'name' => 'SettingsForm',
+            'caption' => $this->title . ' ' . $this->version,
+            'width' => '500px',
+            'fields' => array(
+                array('type' => 'hidden', 'name' => 'update', 'value' => $this->name),
+                array('type' => 'header', 'value' => 'Шаблоны'),
+                array('type' => 'memo', 'name' => 'tmplList', 'label' => 'Шаблон блока одного уровня меню',
+                    'height' => '3'),
+                array('type' => 'text',
+                    'value' => 'Макросы:<ul><li><b>$(level)</b> - номер текущего уровня</li><li><b>$(items)' .
+                        '</b> - подразделы</li></ul>'),
+                array('type' => 'memo', 'name' => 'tmplItem', 'label' => 'Шаблон пункта меню', 'height' => '3'),
+                array('type' => 'text', 'value' => 'Макросы:<ul><li><b>Все элементы страницы</b></li><li>' .
+                    '<b>$(level)</b> - номер текущего уровня</li><li><b>$(url)</b> - ссылка</li><li><b>' .
+                    '$(subitems)</b> - место для вставки подразделов</li></ul>'),
+                array('type' => 'header', 'value' => 'Опции'),
+                array('type' => 'checkbox', 'name' => 'showHidden', 'label' => 'Показывать невидимые'),
+                array('type' => 'checkbox', 'name' => 'showPriveleged',
+                    'label' => 'Показывать независимо от уровня доступа'),
+            ),
+            'buttons' => array('ok', 'apply', 'cancel'),
+        );
+        $result = Eresus_Kernel::app()->getPage()->renderForm($form, $this->settings);
+        return $result;
+    }
+    //-----------------------------------------------------------------------------
 
-	/**
-	 * Построение ветки
-	 *
-	 * @param int    $owner  ID корневого предка
-	 * @param int    $level  уровень вложенности
-	 * @return string
-	 */
-	private function branch($owner = 0, $level = 0)
-	{
-		$result = '';
+    /**
+     * Построение ветки
+     *
+     * @param int $owner ID корневого предка
+     * @param int $level уровень вложенности
+     * @return string
+     */
+    private function branch($owner = 0, $level = 0)
+    {
+        $result = '';
 
-		$flags = SECTIONS_ACTIVE;
-		if (!$this->settings['showHidden'])
-		{
-			$flags += SECTIONS_VISIBLE;
-		}
+        $flags = SECTIONS_ACTIVE;
+        if (!$this->settings['showHidden'])
+        {
+            $flags += SECTIONS_VISIBLE;
+        }
 
-		$access = $this->settings['showPriveleged'] ? ROOT :
-			Eresus_CMS::getLegacyKernel()->user['access'];
+        $access = $this->settings['showPriveleged'] ? ROOT :
+            Eresus_CMS::getLegacyKernel()->user['access'];
 
-		$items = Eresus_CMS::getLegacyKernel()->sections->children($owner, $access, $flags);
+        $items = Eresus_CMS::getLegacyKernel()->sections->children($owner, $access, $flags);
 
-		if (count($items))
-		{
-			foreach ($items as $item)
-			{
-				$item = Eresus_CMS::getLegacyKernel()->sections->get($item['id']);
-				if ($item['type'] == 'url')
-				{
-					$item['url'] = $item['content'];
-				}
-				else
-				{
-					$item['url'] = Eresus_Kernel::app()->getPage()->clientURL($item['id']);
-				}
-				$item['level'] = $level+1;
-				$item['subitems'] = $this->branch($item['id'], $level+1);
-				$result .= $this->replaceMacros($this->settings['tmplItem'], $item);
-			}
-			$result = array('level'=>($level+1), 'items'=>$result);
-			$result = $this->replaceMacros($this->settings['tmplList'], $result);
-		}
-		return $result;
-	}
-	//-----------------------------------------------------------------------------
+        if (count($items))
+        {
+            foreach ($items as $item)
+            {
+                $item = Eresus_CMS::getLegacyKernel()->sections->get($item['id']);
+                if ($item['type'] == 'url')
+                {
+                    $item['url'] = $item['content'];
+                }
+                else
+                {
+                    $item['url'] = Eresus_Kernel::app()->getPage()->clientURL($item['id']);
+                }
+                $item['level'] = $level + 1;
+                $item['subitems'] = $this->branch($item['id'], $level + 1);
+                $result .= $this->replaceMacros($this->settings['tmplItem'], $item);
+            }
+            $result = array('level' => ($level + 1), 'items' => $result);
+            $result = $this->replaceMacros($this->settings['tmplList'], $result);
+        }
+        return $result;
+    }
+    //-----------------------------------------------------------------------------
 
-	/**
-	 * ???
-	 * @return string
-	 */
-	public function clientRenderContent()
-	{
-		$extra_GET_arguments = Eresus_CMS::getLegacyKernel()->request['url'] !=
-			Eresus_CMS::getLegacyKernel()->request['path'];
-		$is_ARG_request = count(Eresus_CMS::getLegacyKernel()->request['arg']);
+    /**
+     * ???
+     * @return string
+     */
+    public function clientRenderContent()
+    {
+        $extra_GET_arguments = Eresus_CMS::getLegacyKernel()->request['url'] !=
+            Eresus_CMS::getLegacyKernel()->request['path'];
+        $is_ARG_request = count(Eresus_CMS::getLegacyKernel()->request['arg']);
 
-		if ($extra_GET_arguments)
-		{
-			Eresus_Kernel::app()->getPage()->httpError(404);
-		}
-		if ($is_ARG_request)
-		{
-			Eresus_Kernel::app()->getPage()->httpError(404);
-		}
+        if ($extra_GET_arguments)
+        {
+            Eresus_Kernel::app()->getPage()->httpError(404);
+        }
+        if ($is_ARG_request)
+        {
+            Eresus_Kernel::app()->getPage()->httpError(404);
+        }
 
-		$result = $this->branch();
-		return $result;
-	}
-	//-----------------------------------------------------------------------------
+        $result = $this->branch();
+        return $result;
+    }
+    //-----------------------------------------------------------------------------
 
-	/**
-	 * ???
-	 * @return string
-	 */
-	public function adminRenderContent()
-	{
-		$wnd = array(
-			'caption' => $this->title,
-			'body' =>
-			'<p>Содержимое этого раздела создаётся автоматически на основе <a href="'.
-				Eresus_CMS::getLegacyKernel()->root .
-				'admin.php?mod=pages">структуры разделов</a> сайта.</p>'.
-				'<p>Настроить внешний вид можно в <a href="' .
-				Eresus_CMS::getLegacyKernel()->root . 'admin.php?mod=plgmgr&id='.
-				$this->name.'">настройках модуля</a>.</p>',
-		);
+    /**
+     * ???
+     * @return string
+     */
+    public function adminRenderContent()
+    {
+        $wnd = array(
+            'caption' => $this->title,
+            'body' =>
+                '<p>Содержимое этого раздела создаётся автоматически на основе <a href="' .
+                Eresus_CMS::getLegacyKernel()->root .
+                'admin.php?mod=pages">структуры разделов</a> сайта.</p>' .
+                '<p>Настроить внешний вид можно в <a href="' .
+                Eresus_CMS::getLegacyKernel()->root . 'admin.php?mod=plgmgr&id=' .
+                $this->name . '">настройках модуля</a>.</p>',
+        );
 
-		$result = Eresus_Kernel::app()->getPage()->window($wnd);
+        $result = Eresus_Kernel::app()->getPage()->window($wnd);
 
-		return $result;
-	}
-	//-----------------------------------------------------------------------------
+        return $result;
+    }
+    //-----------------------------------------------------------------------------
 }
