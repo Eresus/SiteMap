@@ -4,7 +4,7 @@
  *
  * Карта разделов сайта
  *
- * @version 4.00
+ * @version ${product.version}
  *
  * @copyright 2006, Михаил Красильников <mihalych@vsepofigu.ru>
  * @copyright 2007, Eresus Group, http://eresus.ru/
@@ -45,7 +45,7 @@ class SiteMap extends ContentPlugin
      * Версия
      * @var string
      */
-    public $version = '4.00a';
+    public $version = '${product.version}';
 
     /**
      * Требуемая версия CMS
