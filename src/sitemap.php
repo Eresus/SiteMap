@@ -30,8 +30,6 @@
  * <http://www.gnu.org/licenses/>
  *
  * @package Sitemap
- *
- * $Id: sitemap.php 60 2010-03-01 03:41:02Z ghost $
  */
 
 /**
