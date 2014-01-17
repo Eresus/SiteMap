@@ -104,7 +104,9 @@ class SiteMap extends ContentPlugin
             ),
             'buttons' => array('ok', 'apply', 'cancel'),
         );
-        $result = Eresus_Kernel::app()->getPage()->renderForm($form, $this->settings);
+        /** @var TAdminUI $page */
+        $page = Eresus_Kernel::app()->getPage();
+        $result = $page->renderForm($form, $this->settings);
         return $result;
     }
 
@@ -163,13 +165,15 @@ class SiteMap extends ContentPlugin
             Eresus_CMS::getLegacyKernel()->request['path'];
         $is_ARG_request = count(Eresus_CMS::getLegacyKernel()->request['arg']);
 
+        /** @var TClientUI $page */
+        $page = Eresus_Kernel::app()->getPage();
         if ($extra_GET_arguments)
         {
-            Eresus_Kernel::app()->getPage()->httpError(404);
+            $page->httpError(404);
         }
         if ($is_ARG_request)
         {
-            Eresus_Kernel::app()->getPage()->httpError(404);
+            $page->httpError(404);
         }
 
         $result = $this->branch();
@@ -193,7 +197,9 @@ class SiteMap extends ContentPlugin
                 $this->name . '">настройках модуля</a>.</p>',
         );
 
-        $result = Eresus_Kernel::app()->getPage()->window($wnd);
+        /** @var TAdminUI $page */
+        $page = Eresus_Kernel::app()->getPage();
+        $result = $page->window($wnd);
 
         return $result;
     }
